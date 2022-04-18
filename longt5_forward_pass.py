@@ -3,8 +3,10 @@ import argparse
 import gin
 import numpy as np
 import torch
+
 import t5x
-from transformers import FlaxLongT5ForConditionalGeneration, LongT5ForConditionalGeneration
+from transformers import (FlaxLongT5ForConditionalGeneration,
+                          LongT5ForConditionalGeneration)
 
 
 def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:

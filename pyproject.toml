@@ -1,0 +1,8 @@
+[tool.black]
+line-length = 120
+target-version = ['py37']
+exclude = "(flaxformer|t5x|transformers)"
+
+[tool.isort]
+profile = "black"
+line_length = 120
