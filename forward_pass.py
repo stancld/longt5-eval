@@ -8,7 +8,7 @@ import t5x
 from transformers import AutoModelForSeq2SeqLM, FlaxAutoModelForSeq2SeqLM
 
 
-def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
+def main(config_file: str, checkpoint_dir: str, hf_model_path: str, run_torch: bool) -> None:
     # Prepare input
     shape = [2, 10]
     encoder_input_tokens = np.ones(shape, dtype=np.int32)
@@ -47,16 +47,17 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
     #################
     ## HuggingFace ##
     #################
-    pt_model = AutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
-    print("~~~~~~~~~ HF PyTorch ~~~~~~~~~~~~~")
-    with torch.no_grad():
-        pt_output = pt_model(
-            input_ids=torch.from_numpy(encoder_input_tokens).long(),
-            labels=torch.from_numpy(decoder_target_tokens).long(),
-        ).logits
+    if run_torch:
+        pt_model = AutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
+        print("~~~~~~~~~ HF PyTorch ~~~~~~~~~~~~~")
+        with torch.no_grad():
+            pt_output = pt_model(
+                input_ids=torch.from_numpy(encoder_input_tokens).long(),
+                labels=torch.from_numpy(decoder_target_tokens).long(),
+            ).logits
 
-    print(pt_output.shape)
-    print("~~~~~~~~~~~~~~~~~~~~~~")
+        print(pt_output.shape)
+        print("~~~~~~~~~~~~~~~~~~~~~~")
 
     flax_model = FlaxAutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
     print("~~~~~~~~~ HF Flax ~~~~~~~~~~~~~")
@@ -66,7 +67,8 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
 
     ### Compare outputs ###
     print("FlaxFormer output:", output.sum())
-    print("HF PyTorch output:", pt_output.sum())
+    if run_torch:
+        print("HF PyTorch output:", pt_output.sum())
     print("HF Flax output:", flax_output.sum())
 
 
@@ -75,6 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("--config-file")
     parser.add_argument("--checkpoint-dir")
     parser.add_argument("--hf-model-path")
+    parser.add_argument("--run-torch", action="store_true")
     args = parser.parse_args()
 
-    main(args.config_file, args.checkpoint_dir, args.hf_model_path)
+    main(args.config_file, args.checkpoint_dir, args.hf_model_path, args.run_torch)
