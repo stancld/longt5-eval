@@ -2,8 +2,9 @@ import argparse
 
 import gin
 import numpy as np
-import t5x
 import torch
+
+import t5x
 from transformers import AutoModelForSeq2SeqLM, FlaxAutoModelForSeq2SeqLM
 
 

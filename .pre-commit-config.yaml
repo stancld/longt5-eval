@@ -14,12 +14,6 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
-        name: Sort imports
-
   - repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
