@@ -5,8 +5,7 @@ import numpy as np
 import torch
 
 import t5x
-from transformers import (FlaxLongT5ForConditionalGeneration,
-                          LongT5ForConditionalGeneration)
+from transformers import FlaxLongT5ForConditionalGeneration, LongT5ForConditionalGeneration
 
 
 def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
@@ -15,7 +14,7 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
     encoder_input_tokens = np.ones(shape, dtype=np.int32)
     decoder_input_tokens = np.ones(shape, dtype=np.int32)
     decoder_target_tokens = np.ones(shape, dtype=np.int32)
-    
+
     ################
     ## FlaxFormer ##
     ################
@@ -25,7 +24,7 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
     gin.finalize()
 
     # Get model
-    model_config_ref = gin.query_parameter('%MODEL')
+    model_config_ref = gin.query_parameter("%MODEL")
     model = model_config_ref.scoped_configurable_fn()
 
     # Load checkpoint
@@ -50,7 +49,7 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
     with torch.no_grad():
         pt_output = pt_model(
             input_ids=torch.from_numpy(encoder_input_tokens).long(),
-            labels=torch.from_numpy(decoder_target_tokens).long()
+            labels=torch.from_numpy(decoder_target_tokens).long(),
         ).logits
 
     print(pt_output.shape)
