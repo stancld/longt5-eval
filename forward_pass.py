@@ -31,6 +31,7 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
     t5x_checkpoint = t5x.checkpoints.load_t5x_checkpoint(checkpoint_dir)
 
     # Run forward pass
+    print("~~~~~~~~~~ FlaxForrmer ~~~~~~~~~~~~")
     output = model.module.apply(
         {"params": t5x_checkpoint["target"]},
         encoder_input_tokens=encoder_input_tokens,
@@ -41,11 +42,13 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
 
     # Print output shape
     print(output.shape)
+    print("~~~~~~~~~~~~~~~~~~~~~~")
 
     #################
     ## HuggingFace ##
     #################
     pt_model = AutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
+    print("~~~~~~~~~ HF PyTorch ~~~~~~~~~~~~~")
     with torch.no_grad():
         pt_output = pt_model(
             input_ids=torch.from_numpy(encoder_input_tokens).long(),
@@ -53,10 +56,13 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
         ).logits
 
     print(pt_output.shape)
+    print("~~~~~~~~~~~~~~~~~~~~~~")
 
     flax_model = FlaxAutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
+    print("~~~~~~~~~ HF Flax ~~~~~~~~~~~~~")
     flax_output = flax_model(input_ids=encoder_input_tokens, decoder_input_ids=decoder_target_tokens).logits
     print(flax_output.shape)
+    print("~~~~~~~~~~~~~~~~~~~~~~")
 
     ### Compare outputs ###
     print("FlaxFormer output:", output.sum())
