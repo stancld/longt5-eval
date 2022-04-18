@@ -2,9 +2,10 @@ import argparse
 
 import gin
 import numpy as np
-import t5x
 import torch
-from transformers import FlaxLongT5ForConditionalGeneration, LongT5ForConditionalGeneration
+
+import t5x
+from transformers import AutoModelForSeq2SeqLM, FlaxAutoModelForSeq2SeqLM
 
 
 def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
@@ -44,7 +45,7 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
     #################
     ## HuggingFace ##
     #################
-    pt_model = LongT5ForConditionalGeneration.from_pretrained(hf_model_path)
+    pt_model = AutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
     with torch.no_grad():
         pt_output = pt_model(
             input_ids=torch.from_numpy(encoder_input_tokens).long(),
@@ -53,7 +54,7 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str) -> None:
 
     print(pt_output.shape)
 
-    flax_model = FlaxLongT5ForConditionalGeneration.from_pretrained(hf_model_path)
+    flax_model = FlaxAutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
     flax_output = flax_model(input_ids=encoder_input_tokens, decoder_input_ids=decoder_target_tokens).logits
     print(flax_output.shape)
 
