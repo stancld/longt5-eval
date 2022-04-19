@@ -11,6 +11,9 @@ mv checkpoint_1000000 google-checkpoints/t5-v1_1-base
 # LongT5-Local-Base
 gsutil -m cp -r "gs://t5-data/pretrained_models/t5x/longt5/local_base/checkpoint_1000000" .
 mv checkpoint_1000000 google-checkpoints/LongT5-Local-Base
+# LongT5-TGlobal-Base
+gsutil -m cp -r "gs://t5-data/pretrained_models/t5x/longt5/tglobal_base/checkpoint_1000000" .
+mv checkpoint_1000000 google-checkpoints/LongT5-TGlobal-Base
 
 # Install t5x from the source
 cd ./t5x

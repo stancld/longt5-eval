@@ -1,6 +1,7 @@
 import argparse
 
 import gin
+import jax.numpy as jnp
 import numpy as np
 import torch
 
@@ -8,9 +9,9 @@ import t5x
 from transformers import AutoModelForSeq2SeqLM, FlaxAutoModelForSeq2SeqLM
 
 
-def main(config_file: str, checkpoint_dir: str, hf_model_path: str, run_torch: bool) -> None:
+def main(config_file: str, checkpoint_dir: str, hf_model_path: str, run_torch: bool, seq_length: int) -> None:
     # Prepare input
-    shape = [2, 10]
+    shape = [2, seq_length]
     encoder_input_tokens = np.ones(shape, dtype=np.int32)
     decoder_input_tokens = np.ones(shape, dtype=np.int32)
     decoder_target_tokens = np.ones(shape, dtype=np.int32)
@@ -71,6 +72,10 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str, run_torch: b
         print("HF PyTorch output:", pt_output.sum())
     print("HF Flax output:", flax_output.sum())
 
+    # Compare argmax
+    print("FlaxFormer output:", jnp.argmax(output, axis=-1).sum())
+    print("HF Flax output:", jnp.argmax(flax_output, axis=-1).sum())
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -78,6 +83,7 @@ if __name__ == "__main__":
     parser.add_argument("--checkpoint-dir")
     parser.add_argument("--hf-model-path")
     parser.add_argument("--run-torch", action="store_true")
+    parser.add_argument("--seq-length", type=int, default=10)
     args = parser.parse_args()
 
-    main(args.config_file, args.checkpoint_dir, args.hf_model_path, args.run_torch)
+    main(args.config_file, args.checkpoint_dir, args.hf_model_path, args.run_torch, args.seq_length)
