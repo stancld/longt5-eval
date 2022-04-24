@@ -33,6 +33,11 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str, run_torch: b
 
     # Run forward pass
     print("~~~~~~~~~~ FlaxForrmer ~~~~~~~~~~~~")
+    try:
+        embeddings = t5x_checkpoint["target"]["encoder"]["side_relpos_bias"]["rel_embedding"].T
+        print("FlaxFormer global relpos:", embeddings.sum(), embeddings.shape)
+    except:
+        pass
     output = model.module.apply(
         {"params": t5x_checkpoint["target"]},
         encoder_input_tokens=encoder_input_tokens,
@@ -62,6 +67,14 @@ def main(config_file: str, checkpoint_dir: str, hf_model_path: str, run_torch: b
 
     flax_model = FlaxAutoModelForSeq2SeqLM.from_pretrained(hf_model_path)
     print("~~~~~~~~~ HF Flax ~~~~~~~~~~~~~")
+    try:
+        flax_embeddings = flax_model.params["encoder"]["block"]["0"]["layer"]["0"]["TransientGlobalSelfAttention"][
+            "global_relative_attention_bias"
+        ]["embedding"]
+        print("HF Flax global relpos:", flax_embeddings.sum(), flax_embeddings.shape)
+    except:
+        pass
+
     flax_output = flax_model(input_ids=encoder_input_tokens, decoder_input_ids=decoder_target_tokens).logits
     print(flax_output.shape)
     print("~~~~~~~~~~~~~~~~~~~~~~")
