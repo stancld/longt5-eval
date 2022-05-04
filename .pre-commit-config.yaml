@@ -3,7 +3,7 @@ default_language_version:
 
 ci:
   autofix_prs: true
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commif fixed bugs you made :]'
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit update :]'
 
 exclude: 'flaxformer/|t5x/|transformers/'
 
