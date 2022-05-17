@@ -16,4 +16,4 @@ proposed HF-implemented model. For this purpose, there are some example bash scr
 
 Currently, there's a problem with TGlobal model where a discrepancy occurs when the sequence length is larger than `global_block_size`.
 This can be illustrated by running (1) `longt5-tglobal_forward_pass.sh` , and (2) `longt5-tglobal_forward_pass_seq25.sh` scripts
-in the `running_scripts/` folder. There is no issue with the output of the (1), however (2) does not work as expected. 
+in the `running_scripts/` folder. There is no issue with the output of the (1), however (2) does not work as expected.
