@@ -14,7 +14,7 @@ if __name__ == "__main__":
             try:
                 torch.onnx.export(
                     model,
-                    (torch.arange(0, 10).reshape(1, -1), torch.ones(1, 10), torch.arange(0, 10).reshape(1, -1)),
+                    (torch.arange(0, 30).reshape(1, -1), torch.ones(1, 30), torch.arange(0, 30).reshape(1, -1)),
                     f"{tmpdirname}/longt5_test.onnx",
                     export_params=True,
                     opset_version=opset_version,
