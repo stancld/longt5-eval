@@ -20,7 +20,7 @@ cd ./t5x
 python -m pip install -e .
 cd ..
 
-# Instal transformers from the source on the branch where the LongT5 is developed
+# Install transformers from the source on the branch where the LongT5 is developed
 cd ./transformers
 git checkout new_model/LongT5
 python -m pip install -e .
