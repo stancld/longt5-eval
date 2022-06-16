@@ -25,3 +25,11 @@ repos:
     hooks:
       - id: flake8
         name: PEP8
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
+        args: [
+          "--regex", "(iam\\.amazonaws\\.com||\\\\[a-z]|(?:[^\\W_-]|[']){2,})"
+        ]
