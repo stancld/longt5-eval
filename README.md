@@ -14,7 +14,7 @@ This repo can be still, however, use as a simple example how to use `t5x` repo a
 Google packages like `T5x, Flaxformer`.
 
 2. Then, there is an example python file `forward_pass` which contains logic for the evaluation both of the original model and
-proposed HF-implemented model. For this purpose, there are some example bash script in `runnin_scripts/` folder.
+proposed HF-implemented model. For this purpose, there are some example bash script in `running_scripts/` folder.
 
 ## Current issue
 
