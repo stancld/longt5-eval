@@ -9,25 +9,25 @@ exclude: 'flaxformer/|t5x/|transformers/'
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 24.3.0
     hooks:
       - id: black
         name: Blackify code
 
   - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+    rev: 7.0.0
     hooks:
       - id: flake8
         name: PEP8
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.4
+    rev: v2.2.6
     hooks:
       - id: codespell
         args: [
